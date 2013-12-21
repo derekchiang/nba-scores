@@ -48,38 +48,35 @@ fn main() {
         for sport in lst.move_rev_iter() {
             let mut obj = take_or_fail!(sport, Object(obj) => obj);
             let s = take_or_fail!(obj.pop(&~"sport"), Some(String(s)) => s);
-            if "nba" == s {
-                let lst = take_or_fail!(obj.pop(&~"leagues"), Some(List(lst)) => lst);
-                let mut obj = take_or_fail!(lst[0], Object(obj) => obj);
-                let games = take_or_fail!(obj.pop(&~"games"), Some(List(games)) => games);
-                for game in games.move_rev_iter() {
-                    let mut obj = take_or_fail!(game, Object(obj) => obj);
-                    let status = take_or_fail!(obj.pop(&~"status"), Some(Number(status)) => status);
-                    match status {
-                        1.0 => {
-                            let status_text = take_or_fail!(obj.pop(&~"statusText"), Some(String(status_text)) => status_text);
-                            print!("Incoming ({}): ", status_text);
-                        },
-                        3.0 => {
-                            print("Final: ");
-                        },
-                        _ => {
-                            print("Live: ");
-                        }
-                    };
-                    let mut home = take_or_fail!(obj.pop(&~"home"), Some(Object(home)) => home);
-                    let (location, nickname, score) = take_or_fail!((home.pop(&~"location"), home.pop(&~"nickname"), home.pop(&~"score")),
-                        (Some(String(location)), Some(String(nickname)), Some(Number(score))) => (location, nickname, score));
-                    print!("{} {}(home) {} : ", location, nickname, score);
-                    let mut away = take_or_fail!(obj.pop(&~"away"), Some(Object(away)) => away);
-                    let (location, nickname, score) = take_or_fail!((away.pop(&~"location"), away.pop(&~"nickname"), away.pop(&~"score")),
-                        (Some(String(location)), Some(String(nickname)), Some(Number(score))) => (location, nickname, score));
-                    println!("{} {} {}(away)", score, location, nickname);
-                }
-                return;
-            } else {
-                continue;
+            if "nba" != s { continue; }
+            let lst = take_or_fail!(obj.pop(&~"leagues"), Some(List(lst)) => lst);
+            let mut obj = take_or_fail!(lst[0], Object(obj) => obj);
+            let games = take_or_fail!(obj.pop(&~"games"), Some(List(games)) => games);
+            for game in games.move_rev_iter() {
+                let mut obj = take_or_fail!(game, Object(obj) => obj);
+                let status = take_or_fail!(obj.pop(&~"status"), Some(Number(status)) => status);
+                match status {
+                    1.0 => {
+                        let status_text = take_or_fail!(obj.pop(&~"statusText"), Some(String(status_text)) => status_text);
+                        print!("Incoming ({}): ", status_text);
+                    },
+                    3.0 => {
+                        print("Final: ");
+                    },
+                    _ => {
+                        print("Live: ");
+                    }
+                };
+                let mut home = take_or_fail!(obj.pop(&~"home"), Some(Object(home)) => home);
+                let (location, nickname, score) = take_or_fail!((home.pop(&~"location"), home.pop(&~"nickname"), home.pop(&~"score")),
+                    (Some(String(location)), Some(String(nickname)), Some(Number(score))) => (location, nickname, score));
+                print!("{} {}(home) {} : ", location, nickname, score);
+                let mut away = take_or_fail!(obj.pop(&~"away"), Some(Object(away)) => away);
+                let (location, nickname, score) = take_or_fail!((away.pop(&~"location"), away.pop(&~"nickname"), away.pop(&~"score")),
+                    (Some(String(location)), Some(String(nickname)), Some(Number(score))) => (location, nickname, score));
+                println!("{} {} {}(away)", score, location, nickname);
             }
+            return;
         }
     }
 }
