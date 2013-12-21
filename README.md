@@ -16,15 +16,17 @@ Final: Philadelphia 76ers(home) 121 : 120 Brooklyn Nets(away)
 Live: Los Angeles Lakers(home) 51 : 53 Minnesota Timberwolves(away)
 ```
 
-## Dependencies
+## Installation
+
+To compile the code, you need to install the following:
 
 1. [Rust](https://github.com/mozilla/rust)
 2. [rust-http](https://github.com/chris-morgan/rust-http)
 
-## Installation
+Then:
 
 1. Clone the repo.
-2. Compile main.rs to obtain the executable.
+2. Compile main.rs to obtain the executable: `rustc -O -o nba main.rs`
 3. Put the executable in your `path`, and enjoy!
 
 ## License
